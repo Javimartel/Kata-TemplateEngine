@@ -6,6 +6,10 @@ export class TextToReplace {
     }
 
     static create(textToReplace: String): TextToReplace {
-        throw new Error("Text to replace is empty");
+        const isEmpty = textToReplace === "";
+        if (isEmpty) {
+            throw new Error("Text to replace is empty");
+        }
+        return new TextToReplace(textToReplace);
     }
 }

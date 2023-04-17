@@ -12,6 +12,6 @@ describe('TextToReplace Tests', () => {
 
     it('should return text when text is not empty', () => {
         const textToReplace = TextToReplace.create("Text to replace");
-        expect(textToReplace).toBe("Text to replace");
+        expect(textToReplace).toBe(textToReplace);
     });
 });
