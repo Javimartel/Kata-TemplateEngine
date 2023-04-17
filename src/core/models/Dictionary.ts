@@ -6,6 +6,10 @@ export class Dictionary {
     }
 
     static create(dictionary: Object): Dictionary {
-        throw new Error("Dictionary is empty");
+        const isEmpty = Object.keys(dictionary).length === 0;
+        if (isEmpty) {
+            throw new Error("Dictionary is empty");
+        }
+        return new Dictionary(dictionary);
     }
 }
