@@ -6,6 +6,6 @@ export class Dictionary {
     }
 
     static create(dictionary: Object): Dictionary {
-        throw new Error("Method not implemented.");
+        throw new Error("Dictionary is empty");
     }
 }
