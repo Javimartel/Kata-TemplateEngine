@@ -26,4 +26,14 @@ describe('TemplateEngine Tests', () => {
 
         expect(replacedText).toBe(expectedResponse);
     });
+
+    it('should return the text with more than one variable replaced if everything is correct', () => {
+        const textToReplace = TextToReplace.create('this is another ${variable} with ${another_variable} variables');
+        const variableDictionary = Dictionary.create({ variable: 'test', another_variable: 'two' });
+        const expectedResponse = 'this is another test with two variables';
+
+        const replacedText = templateEngineService.replaceVariable(textToReplace, variableDictionary);
+
+        expect(replacedText).toBe(expectedResponse);
+    });
 });
