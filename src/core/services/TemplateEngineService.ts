@@ -1,14 +1,10 @@
+import { TextToReplace } from "@core/models/TextToReplace";
 import { TemplateEngineRepository } from "../repositories/TemplateEngineRepository";
+import { Dictionary } from "@core/models/Dictionary";
 
-export class TemplateEngineService {
+export class TemplateEngineService implements TemplateEngineRepository {
 
-    private templateEngineRepository: TemplateEngineRepository;
-
-    constructor(templateEngineRepository: TemplateEngineRepository) {
-        this.templateEngineRepository = templateEngineRepository;
-    }
-
-    public replaceVariable(text: String, dictionary: Object): String {
+    public replaceVariable(textToReplace: TextToReplace, variableDictionary: Dictionary): String {
         throw new Error("Method not implemented.");
         // const dictionaryIsEmpty = Object.keys(dictionary).length === 0;
 
