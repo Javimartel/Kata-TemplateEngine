@@ -12,4 +12,8 @@ export class TextToReplace {
         }
         return new TextToReplace(textToReplace);
     }
+
+    getTextToReplace(): String {
+        return this.textToReplace;
+    }
 }

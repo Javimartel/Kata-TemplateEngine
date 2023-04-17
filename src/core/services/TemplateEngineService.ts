@@ -5,7 +5,12 @@ import { Dictionary } from "@core/models/Dictionary";
 export class TemplateEngineService implements TemplateEngineRepository {
 
     public replaceVariable(textToReplace: TextToReplace, variableDictionary: Dictionary): String {
-        throw new Error("Method not implemented.");
+
+        const key = Object.keys(variableDictionary.getDictionary());
+        const value = variableDictionary.getDictionary()[key[0]];
+
+        return textToReplace.getTextToReplace().replace("${" + key + "}", value);
+
         // const dictionaryIsEmpty = Object.keys(dictionary).length === 0;
 
         // if (dictionaryIsEmpty) {
