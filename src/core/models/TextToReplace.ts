@@ -6,6 +6,6 @@ export class TextToReplace {
     }
 
     static create(textToReplace: String): TextToReplace {
-        throw new Error("Method not implemented.");
+        throw new Error("Text to replace is empty");
     }
 }
