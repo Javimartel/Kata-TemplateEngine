@@ -6,10 +6,19 @@ export class TemplateEngineService implements TemplateEngineRepository {
 
     public replaceVariable(textToReplace: TextToReplace, variableDictionary: Dictionary): String {
 
-        const key = Object.keys(variableDictionary.getDictionary());
-        const value = variableDictionary.getDictionary()[key[0]];
+        let replacedText = "";
+        let textWithVariables = textToReplace.getTextToReplace();
+        const dictionaryWithVariables = variableDictionary.getDictionary();
 
-        return textToReplace.getTextToReplace().replace("${" + key + "}", value);
+        Object.keys(dictionaryWithVariables).forEach(key => {
+            const value = dictionaryWithVariables[key]
+            replacedText = textWithVariables.replace("${" + key + "}", value)
+            textWithVariables = replacedText;
+            // textToReplace.getTextToReplace() = replacedText;
+        });
+
+        return replacedText;
+
 
         // const dictionaryIsEmpty = Object.keys(dictionary).length === 0;
 
