@@ -15,10 +15,16 @@ export class TemplateEngineService implements TemplateEngineRepository {
             const value = dictionaryWithVariables[key];
             const variableToSearch = "${" + key + "}";
 
-            if (textWithVariables.includes(variableToSearch)) {
+            if (!this.isSerializable(value)) {
+                wrongKeys.push({ variable: key, reason: "variable is not serializable" });
+            } 
+            
+            else if (textWithVariables.includes(variableToSearch)) {
                 replacedText = textWithVariables.replace(variableToSearch, value);
                 textWithVariables = replacedText;
-            } else {
+            } 
+            
+            else {
                 wrongKeys.push({ variable: key, reason: "variable doesnt exist" });
             }
         });
@@ -35,17 +41,11 @@ export class TemplateEngineService implements TemplateEngineRepository {
         }
     }
 
-
-    // public isSerializable = (value: any) => {
-
-    //     try {
-    //         JSON.stringify(value);
-    //         return true;
-    //     } catch (error) {
-    //         return false;
-    //     }
-
-    // }
-
-
+    private isSerializable = (value: any) => {
+        return (
+            typeof value === 'string'  || 
+            typeof value === 'boolean' || 
+            typeof value === 'number'
+        );
+    }
 }

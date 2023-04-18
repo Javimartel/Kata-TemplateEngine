@@ -47,8 +47,8 @@ describe('TemplateEngine Tests', () => {
         const replacedText = templateEngineService.replaceVariable(textToReplace, variableDictionary);
 
         expect(warn).toBeCalledWith(expectedWarning);
-        expect(replacedText).toBe(expectedResponse);
         warn.mockReset();
+        expect(replacedText).toBe(expectedResponse);
     });
     
     it('should return a warning if the variable is not serializable', () => {
@@ -61,7 +61,7 @@ describe('TemplateEngine Tests', () => {
         const replacedText = templateEngineService.replaceVariable(textToReplace, variableDictionary);
 
         expect(warn).toBeCalledWith(expectedWarning);
-        expect(replacedText).toBe(expectedResponse);
         warn.mockReset();
+        expect(replacedText).toBe(expectedResponse);
     });
 });
