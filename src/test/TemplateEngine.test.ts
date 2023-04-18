@@ -48,5 +48,20 @@ describe('TemplateEngine Tests', () => {
 
         expect(warn).toBeCalledWith(expectedWarning);
         expect(replacedText).toBe(expectedResponse);
+        warn.mockReset();
+    });
+    
+    it('should return a warning if the variable is not serializable', () => {
+        const textToReplace = TextToReplace.create('this is another ${variable} with ${another_variable} variables');
+        const variableDictionary = Dictionary.create({ variable: 'test', another_variable: null });
+        const warn = jest.spyOn(console, 'warn').mockImplementation();
+        const expectedResponse = 'this is another test with ${another_variable} variables';
+        const expectedWarning = 'WARNING: [{variable:another_variable,reason:variable is not serializable}]';
+
+        const replacedText = templateEngineService.replaceVariable(textToReplace, variableDictionary);
+
+        expect(warn).toBeCalledWith(expectedWarning);
+        expect(replacedText).toBe(expectedResponse);
+        warn.mockReset();
     });
 });
