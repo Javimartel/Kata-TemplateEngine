@@ -37,12 +37,12 @@ describe('TemplateEngine Tests', () => {
         expect(replacedText).toBe(expectedResponse);
     });
 
-    it('should return a warning if the variable is null', () => {
+    it('should return a warning if the variable is unknown', () => {
         const textToReplace = TextToReplace.create('this is another ${variable} with ${another_variable} variables');
-        const variableDictionary = Dictionary.create({ variable: 'test', another_variable: null });
+        const variableDictionary = Dictionary.create({ variable: 'test', another_variable: "two", unknown_variable: "test" });
         const warn = jest.spyOn(console, 'warn').mockImplementation();
-        const expectedResponse = 'this is another test with ${another_variable} variables';
-        const expectedWarning = 'WARNING: {variable: another_variable, reason: null}';
+        const expectedResponse = 'this is another test with two variables';
+        const expectedWarning = 'WARNING: [{variable:unknown_variable,reason:variable doesnt exist}]';
 
         const replacedText = templateEngineService.replaceVariable(textToReplace, variableDictionary);
 

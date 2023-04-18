@@ -9,13 +9,23 @@ export class TemplateEngineService implements TemplateEngineRepository {
         let replacedText = "";
         let textWithVariables = textToReplace.getTextToReplace();
         const dictionaryWithVariables = variableDictionary.getDictionary();
+        const wrongKeys: Array<{}> = [];
 
         Object.keys(dictionaryWithVariables).forEach(key => {
-            const value = dictionaryWithVariables[key]
-            replacedText = textWithVariables.replace("${" + key + "}", value)
-            textWithVariables = replacedText;
-            // textToReplace.getTextToReplace() = replacedText;
+            const value = dictionaryWithVariables[key];
+            const variableToSearch = "${" + key + "}";
+
+            if (textWithVariables.includes(variableToSearch)) {
+                replacedText = textWithVariables.replace(variableToSearch, value);
+                textWithVariables = replacedText;
+            } else {
+                wrongKeys.push({ variable: key, reason: "variable doesnt exist" });
+            }
         });
+
+        console.warn("WARNING: " + JSON.stringify(wrongKeys).replace(/\"/gi, ''));
+        if (wrongKeys.length > 0) {
+        }
 
         return replacedText;
 
