@@ -36,4 +36,17 @@ describe('TemplateEngine Tests', () => {
 
         expect(replacedText).toBe(expectedResponse);
     });
+
+    it('should return a warning if the variable is null', () => {
+        const textToReplace = TextToReplace.create('this is another ${variable} with ${another_variable} variables');
+        const variableDictionary = Dictionary.create({ variable: 'test', another_variable: null });
+        const warn = jest.spyOn(console, 'warn').mockImplementation();
+        const expectedResponse = 'this is another test with ${another_variable} variables';
+        const expectedWarning = 'WARNING: {variable: another_variable, reason: null}';
+
+        const replacedText = templateEngineService.replaceVariable(textToReplace, variableDictionary);
+
+        expect(warn).toBeCalledWith(expectedWarning);
+        expect(replacedText).toBe(expectedResponse);
+    });
 });
