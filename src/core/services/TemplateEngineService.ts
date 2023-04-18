@@ -11,22 +11,14 @@ export class TemplateEngineService implements TemplateEngineRepository {
         const dictionaryWithVariables = variableDictionary.getDictionary();
         const wrongKeys: Array<{}> = [];
         
-        const regexpToSearch = /\${\w+}/g;
-        const variablesToSearch = textWithVariables.match(regexpToSearch);
-
-        variablesToSearch.forEach(variable => {
-            const replacedVariable = variable.replace(/\${|}/g, '');
-            if (!(replacedVariable in dictionaryWithVariables)) {
-                wrongKeys.push({ variable: replacedVariable, reason: "variable doesnt exist in dictionary" });
-            }
-        });
+        this.checkVariablesIn(textWithVariables, dictionaryWithVariables, wrongKeys);
 
         Object.keys(dictionaryWithVariables).forEach(key => {
             const value = dictionaryWithVariables[key];
             const variableToSearch = "${" + key + "}";
 
             if (!this.isSerializable(value)) {
-                wrongKeys.push({ variable: key, reason: "variable is not serializable" });
+                this.addWarningTo(wrongKeys, key, 'variable is not serializable');
             } 
             
             else if (textWithVariables.includes(variableToSearch)) {
@@ -35,7 +27,7 @@ export class TemplateEngineService implements TemplateEngineRepository {
             } 
             
             else {
-                wrongKeys.push({ variable: key, reason: "variable doesnt exist in text" });
+                this.addWarningTo(wrongKeys, key, 'variable doesnt exist in text');
             }
         });
 
@@ -57,5 +49,21 @@ export class TemplateEngineService implements TemplateEngineRepository {
             typeof value === 'boolean' || 
             typeof value === 'number'
         );
+    }
+
+    private checkVariablesIn(textWithVariables: String, dictionaryWithVariables: Object, wrongKeys: Array<{}>) {
+        const regexpToSearch = /\${\w+}/g;
+        const variablesToSearch = textWithVariables.match(regexpToSearch);
+
+        variablesToSearch.forEach(variable => {
+            const replacedVariable = variable.replace(/\${|}/g, '');
+            if (!(replacedVariable in dictionaryWithVariables)) {
+                this.addWarningTo(wrongKeys, replacedVariable, 'variable doesnt exist in dictionary');
+            }
+        });
+    }
+
+    private addWarningTo(wrongKeys: Array<{}>, warnedKey: String, message: String) {
+        wrongKeys.push({ variable: warnedKey, reason: message });
     }
 }
