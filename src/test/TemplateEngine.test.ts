@@ -42,7 +42,7 @@ describe('TemplateEngine Tests', () => {
         const variableDictionary = Dictionary.create({ variable: 'test', another_variable: "two", unknown_variable: "test" });
         const warn = jest.spyOn(console, 'warn').mockImplementation();
         const expectedResponse = 'this is another test with two variables';
-        const expectedWarning = 'WARNING: [{variable:unknown_variable,reason:variable doesnt exist}]';
+        const expectedWarning = 'WARNING: [{variable:unknown_variable,reason:variable doesnt exist in text}]';
 
         const replacedText = templateEngineService.replaceVariable(textToReplace, variableDictionary);
 
@@ -80,6 +80,20 @@ describe('TemplateEngine Tests', () => {
 
         const replacedText = templateEngineService.replaceVariable(textToReplace, variableDictionary);
 
+        expect(replacedText).toBe(expectedResponse);
+    });
+
+    it('should return a warning if text has variables but not dictionary', () => {
+        const textToReplace = TextToReplace.create('this is another ${variable} with ${new_variable} variables');
+        const variableDictionary = Dictionary.create({ variable: 'test' });
+        const warn = jest.spyOn(console, 'warn').mockImplementation();
+        const expectedResponse = 'this is another test with ${new_variable} variables';
+        const expectedWarning = 'WARNING: [{variable:new_variable,reason:variable doesnt exist in dictionary}]';
+
+        const replacedText = templateEngineService.replaceVariable(textToReplace, variableDictionary);
+
+        expect(warn).toBeCalledWith(expectedWarning);
+        warn.mockReset();
         expect(replacedText).toBe(expectedResponse);
     });
 });

@@ -25,7 +25,7 @@ export class TemplateEngineService implements TemplateEngineRepository {
             } 
             
             else {
-                wrongKeys.push({ variable: key, reason: "variable doesnt exist" });
+                wrongKeys.push({ variable: key, reason: "variable doesnt exist in text" });
             }
         });
 
