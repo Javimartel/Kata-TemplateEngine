@@ -17,11 +17,14 @@ export class TemplateEngineService implements TemplateEngineRepository {
             const value = dictionaryWithVariables[key];
             const variableToSearch = "${" + key + "}";
 
-            if (!this.isSerializable(value)) {
+            const notSerializable = !this.isSerializable(value);
+            const isVariableInText = textWithVariables.includes(variableToSearch);
+
+            if (notSerializable) {
                 this.addWarningTo(wrongKeys, key, 'variable is not serializable');
             } 
             
-            else if (textWithVariables.includes(variableToSearch)) {
+            else if (isVariableInText) {
                 replacedText = textWithVariables.replace(variableToSearch, value);
                 textWithVariables = replacedText;
             } 
@@ -38,7 +41,8 @@ export class TemplateEngineService implements TemplateEngineRepository {
     }
     
     private checkLengthFrom(wrongKeys: Array<{}>) {
-        if (wrongKeys.length > 0) {
+        const isNotEmpty = wrongKeys.length != 0;
+        if (isNotEmpty) {
             console.warn("WARNING: " + JSON.stringify(wrongKeys).replace(/\"/gi, ''));
         }
     }
@@ -57,7 +61,8 @@ export class TemplateEngineService implements TemplateEngineRepository {
 
         variablesToSearch.forEach(variable => {
             const replacedVariable = variable.replace(/\${|}/g, '');
-            if (!(replacedVariable in dictionaryWithVariables)) {
+            const isNotInDictionary = !(replacedVariable in dictionaryWithVariables);
+            if (isNotInDictionary) {
                 this.addWarningTo(wrongKeys, replacedVariable, 'variable doesnt exist in dictionary');
             }
         });
