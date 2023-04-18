@@ -10,6 +10,16 @@ export class TemplateEngineService implements TemplateEngineRepository {
         let textWithVariables = textToReplace.getTextToReplace();
         const dictionaryWithVariables = variableDictionary.getDictionary();
         const wrongKeys: Array<{}> = [];
+        
+        const regexpToSearch = /\${\w+}/g;
+        const variablesToSearch = textWithVariables.match(regexpToSearch);
+
+        variablesToSearch.forEach(variable => {
+            const replacedVariable = variable.replace(/\${|}/g, '');
+            if (!(replacedVariable in dictionaryWithVariables)) {
+                wrongKeys.push({ variable: replacedVariable, reason: "variable doesnt exist in dictionary" });
+            }
+        });
 
         Object.keys(dictionaryWithVariables).forEach(key => {
             const value = dictionaryWithVariables[key];
