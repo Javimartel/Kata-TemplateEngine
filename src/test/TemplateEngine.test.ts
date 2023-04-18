@@ -64,4 +64,22 @@ describe('TemplateEngine Tests', () => {
         warn.mockReset();
         expect(replacedText).toBe(expectedResponse);
     });
+
+    it('should return the text with multiple replaced variable', () => {
+        const textToReplace = TextToReplace.create("This is a text with a ${variable} to be replaced. \n" +
+        "And this is another text with ${other_variable} to be replaced. \n" +
+        "And this is another text with ${another_variable} to be replaced.");
+        const variableDictionary = Dictionary.create({ 
+            variable: "value", 
+            other_variable: "other-value", 
+            another_variable: "another-value" 
+        });
+        const expectedResponse = "This is a text with a value to be replaced. \n" +
+        "And this is another text with other-value to be replaced. \n" +
+        "And this is another text with another-value to be replaced.";
+
+        const replacedText = templateEngineService.replaceVariable(textToReplace, variableDictionary);
+
+        expect(replacedText).toBe(expectedResponse);
+    });
 });
