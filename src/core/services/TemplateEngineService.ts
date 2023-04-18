@@ -23,36 +23,16 @@ export class TemplateEngineService implements TemplateEngineRepository {
             }
         });
 
-        console.warn("WARNING: " + JSON.stringify(wrongKeys).replace(/\"/gi, ''));
-        if (wrongKeys.length > 0) {
-        }
-
+        this.checkLengthFrom(wrongKeys);
+        
         return replacedText;
-
-
-        // const dictionaryIsEmpty = Object.keys(dictionary).length === 0;
-
-        // if (dictionaryIsEmpty) {
-        //     return text;
-        // }
-
-        // let replacedText = "";
-        // const wrongKeys = []
-
-        // Object.keys(dictionary).forEach(key => {
-
-        //     const value = dictionary[key]
-
-        //     if (this.isSerializable(value)) {
-        //         replacedText = text.replace("${" + key + "}", value)
-        //         text = replacedText;
-        //     } else {
-        //         wrongKeys.push(value)
-        //     }
-
-        // });
-
-        // return replacedText;
+        
+    }
+    
+    private checkLengthFrom(wrongKeys: Array<{}>) {
+        if (wrongKeys.length > 0) {
+            console.warn("WARNING: " + JSON.stringify(wrongKeys).replace(/\"/gi, ''));
+        }
     }
 
 
